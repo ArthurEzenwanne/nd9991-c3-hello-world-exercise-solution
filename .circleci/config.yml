@@ -144,7 +144,7 @@ jobs:
   # Note that the `--parameter-overrides` let you specify a value that override parameter value in the bucket.yml template file.
   create_and_deploy_front_end:
     docker:
-      - image: cimg/aws:2022.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
@@ -161,7 +161,7 @@ jobs:
   # # Fetch and save the pipeline ID (bucket ID) responsible for the last release.
   get_last_deployment_id:
     docker:
-      - image: cimg/aws:2022.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run: yum install -y tar gzip
@@ -181,7 +181,7 @@ jobs:
   # Notice here we use the stack name `production-distro` which is the same name we used while deploying to the S3 bucket manually.
   promote_to_production:
     docker:
-      - image: cimg/aws:2022.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
@@ -196,7 +196,7 @@ jobs:
   # # Destroy the previous production version's S3 bucket and CloudFormation stack. 
   clean_up_old_front_end:
     docker:
-      - image: cimg/aws:2022.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run: yum install -y tar gzip
