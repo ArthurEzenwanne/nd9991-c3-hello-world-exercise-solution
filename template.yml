@@ -29,7 +29,3 @@ Outputs:
     Value: !GetAtt EC2Instance.PublicIp
     Export:
       Name: InstancePublicIP
-      
-  aws ec2 describe-instances \
-    --filters Name=instance-state-name,Values=running \
-    --query 'Reservations[*].Instances[].[InstanceId, BlockDeviceMappings[*].{DeviceName:DeviceName,VolumeName:Ebs.VolumeId}, Tags[?Key==`Name`]]'
