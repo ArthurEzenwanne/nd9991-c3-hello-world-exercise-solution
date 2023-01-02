@@ -76,6 +76,13 @@ jobs:
               --template-file template.yml \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
+      - run:
+          name: Add instance publicIP address to inventory.txt
+          command: |
+            aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=demoServer" \
+              --output text >> inventory.txt
       # Fail the job intentionally to simulate an error.
       # Uncomment the line below if you want to fail the current step
       # - run: return 1
@@ -87,14 +94,7 @@ jobs:
     docker:
       - image: python:3.7-alpine3.11
     steps:
-      - checkout
-      - run:
-          name: Add instance publicIP address to inventory.txt
-          command: |
-            aws aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:Name,Values=demoServer" \
-              --output text >> inventory.txt                 
+      - checkout                 
       - add_ssh_keys:
           fingerprints: ["5f:8a:db:74:d5:b8:56:a5:96:38:92:00:48:36:df:ed"] # You can get this ID in the section where you registered the SSH Key
       - run:
