@@ -124,7 +124,7 @@ jobs:
             else
               return 1
             fi
-      - store_test_results: yes
+      # - store_test_results: yes
   #     - destroy_environment      
   
   # Exercise: Promote to Production - Job 1 
