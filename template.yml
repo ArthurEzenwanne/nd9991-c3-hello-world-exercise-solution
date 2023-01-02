@@ -10,7 +10,7 @@ Resources:
       KeyName: demoServer-key
       ImageId: 'ami-0574da719dca65348' # you may need to find out what instance types are available in your region - use https://cloud-images.ubuntu.com/locator/ec2/
       InstanceType: t2.micro
-      Tag:
+      Tags:
         - Key: Name
           Value: demoServer
   InstanceSecurityGroup:
@@ -22,3 +22,14 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIp: 0.0.0.0/0
+
+Outputs: 
+  WebAppLBURL:
+    Description: The public IP of the instance.
+    Value: !GetAtt EC2Instance.PublicIp
+    Export:
+      Name: InstancePublicIP
+      
+  aws ec2 describe-instances \
+    --filters Name=instance-state-name,Values=running \
+    --query 'Reservations[*].Instances[].[InstanceId, BlockDeviceMappings[*].{DeviceName:DeviceName,VolumeName:Ebs.VolumeId}, Tags[?Key==`Name`]]'
